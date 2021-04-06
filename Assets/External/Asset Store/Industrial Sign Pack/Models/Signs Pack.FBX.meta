@@ -1,0 +1,493 @@
+fileFormatVersion: 2
+guid: 66a066352711e4d41b9f204e1887f2a8
+ModelImporter:
+  serializedVersion: 19301
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: 12-6 sign
+  - first:
+      1: 100002
+    second: Attention Sign
+  - first:
+      1: 100004
+    second: Bridge sign
+  - first:
+      1: 100006
+    second: Cam Sign
+  - first:
+      1: 100008
+    second: Caution sign 2
+  - first:
+      1: 100010
+    second: Construction Sign
+  - first:
+      1: 100012
+    second: Danger keep out sign
+  - first:
+      1: 100014
+    second: Danger volt sign
+  - first:
+      1: 100016
+    second: Disabled sign
+  - first:
+      1: 100018
+    second: Elec sign 2
+  - first:
+      1: 100020
+    second: Emergency Exit Sign
+  - first:
+      1: 100022
+    second: Exit sign
+  - first:
+      1: 100024
+    second: Fire Exit Sign
+  - first:
+      1: 100026
+    second: Hard Hat Sign
+  - first:
+      1: 100028
+    second: Hat sign
+  - first:
+      1: 100030
+    second: Low Bridge sign
+  - first:
+      1: 100032
+    second: Maximum sign
+  - first:
+      1: 100034
+    second: No parking sign
+  - first:
+      1: 100036
+    second: No Pass sign
+  - first:
+      1: 100038
+    second: Road sign pole
+  - first:
+      1: 100040
+    second: School bus stop sign
+  - first:
+      1: 100042
+    second: Security 1 sign
+  - first:
+      1: 100044
+    second: //RootNode
+  - first:
+      1: 100046
+    second: Stop Sign
+  - first:
+      1: 100048
+    second: Toxic sign
+  - first:
+      1: 100050
+    second: Warning elec sign
+  - first:
+      1: 100052
+    second: Weight Limit sign
+  - first:
+      4: 400000
+    second: 12-6 sign
+  - first:
+      4: 400002
+    second: Attention Sign
+  - first:
+      4: 400004
+    second: Bridge sign
+  - first:
+      4: 400006
+    second: Cam Sign
+  - first:
+      4: 400008
+    second: Caution sign 2
+  - first:
+      4: 400010
+    second: Construction Sign
+  - first:
+      4: 400012
+    second: Danger keep out sign
+  - first:
+      4: 400014
+    second: Danger volt sign
+  - first:
+      4: 400016
+    second: Disabled sign
+  - first:
+      4: 400018
+    second: Elec sign 2
+  - first:
+      4: 400020
+    second: Emergency Exit Sign
+  - first:
+      4: 400022
+    second: Exit sign
+  - first:
+      4: 400024
+    second: Fire Exit Sign
+  - first:
+      4: 400026
+    second: Hard Hat Sign
+  - first:
+      4: 400028
+    second: Hat sign
+  - first:
+      4: 400030
+    second: Low Bridge sign
+  - first:
+      4: 400032
+    second: Maximum sign
+  - first:
+      4: 400034
+    second: No parking sign
+  - first:
+      4: 400036
+    second: No Pass sign
+  - first:
+      4: 400038
+    second: Road sign pole
+  - first:
+      4: 400040
+    second: School bus stop sign
+  - first:
+      4: 400042
+    second: Security 1 sign
+  - first:
+      4: 400044
+    second: //RootNode
+  - first:
+      4: 400046
+    second: Stop Sign
+  - first:
+      4: 400048
+    second: Toxic sign
+  - first:
+      4: 400050
+    second: Warning elec sign
+  - first:
+      4: 400052
+    second: Weight Limit sign
+  - first:
+      23: 2300000
+    second: 12-6 sign
+  - first:
+      23: 2300002
+    second: Attention Sign
+  - first:
+      23: 2300004
+    second: Bridge sign
+  - first:
+      23: 2300006
+    second: Cam Sign
+  - first:
+      23: 2300008
+    second: Caution sign 2
+  - first:
+      23: 2300010
+    second: Construction Sign
+  - first:
+      23: 2300012
+    second: Danger keep out sign
+  - first:
+      23: 2300014
+    second: Danger volt sign
+  - first:
+      23: 2300016
+    second: Disabled sign
+  - first:
+      23: 2300018
+    second: Elec sign 2
+  - first:
+      23: 2300020
+    second: Emergency Exit Sign
+  - first:
+      23: 2300022
+    second: Exit sign
+  - first:
+      23: 2300024
+    second: Fire Exit Sign
+  - first:
+      23: 2300026
+    second: Hard Hat Sign
+  - first:
+      23: 2300028
+    second: Hat sign
+  - first:
+      23: 2300030
+    second: Low Bridge sign
+  - first:
+      23: 2300032
+    second: Maximum sign
+  - first:
+      23: 2300034
+    second: No parking sign
+  - first:
+      23: 2300036
+    second: No Pass sign
+  - first:
+      23: 2300038
+    second: Road sign pole
+  - first:
+      23: 2300040
+    second: School bus stop sign
+  - first:
+      23: 2300042
+    second: Security 1 sign
+  - first:
+      23: 2300044
+    second: Stop Sign
+  - first:
+      23: 2300046
+    second: Toxic sign
+  - first:
+      23: 2300048
+    second: Warning elec sign
+  - first:
+      23: 2300050
+    second: Weight Limit sign
+  - first:
+      33: 3300000
+    second: 12-6 sign
+  - first:
+      33: 3300002
+    second: Attention Sign
+  - first:
+      33: 3300004
+    second: Bridge sign
+  - first:
+      33: 3300006
+    second: Cam Sign
+  - first:
+      33: 3300008
+    second: Caution sign 2
+  - first:
+      33: 3300010
+    second: Construction Sign
+  - first:
+      33: 3300012
+    second: Danger keep out sign
+  - first:
+      33: 3300014
+    second: Danger volt sign
+  - first:
+      33: 3300016
+    second: Disabled sign
+  - first:
+      33: 3300018
+    second: Elec sign 2
+  - first:
+      33: 3300020
+    second: Emergency Exit Sign
+  - first:
+      33: 3300022
+    second: Exit sign
+  - first:
+      33: 3300024
+    second: Fire Exit Sign
+  - first:
+      33: 3300026
+    second: Hard Hat Sign
+  - first:
+      33: 3300028
+    second: Hat sign
+  - first:
+      33: 3300030
+    second: Low Bridge sign
+  - first:
+      33: 3300032
+    second: Maximum sign
+  - first:
+      33: 3300034
+    second: No parking sign
+  - first:
+      33: 3300036
+    second: No Pass sign
+  - first:
+      33: 3300038
+    second: Road sign pole
+  - first:
+      33: 3300040
+    second: School bus stop sign
+  - first:
+      33: 3300042
+    second: Security 1 sign
+  - first:
+      33: 3300044
+    second: Stop Sign
+  - first:
+      33: 3300046
+    second: Toxic sign
+  - first:
+      33: 3300048
+    second: Warning elec sign
+  - first:
+      33: 3300050
+    second: Weight Limit sign
+  - first:
+      43: 4300000
+    second: Road sign pole
+  - first:
+      43: 4300002
+    second: Maximum sign
+  - first:
+      43: 4300004
+    second: Warning elec sign
+  - first:
+      43: 4300006
+    second: Emergency Exit Sign
+  - first:
+      43: 4300008
+    second: Security 1 sign
+  - first:
+      43: 4300010
+    second: Cam Sign
+  - first:
+      43: 4300012
+    second: Stop Sign
+  - first:
+      43: 4300014
+    second: Hat sign
+  - first:
+      43: 4300016
+    second: Danger keep out sign
+  - first:
+      43: 4300018
+    second: Danger volt sign
+  - first:
+      43: 4300020
+    second: Disabled sign
+  - first:
+      43: 4300022
+    second: Bridge sign
+  - first:
+      43: 4300024
+    second: Elec sign 2
+  - first:
+      43: 4300026
+    second: No Pass sign
+  - first:
+      43: 4300028
+    second: Low Bridge sign
+  - first:
+      43: 4300030
+    second: 12-6 sign
+  - first:
+      43: 4300032
+    second: School bus stop sign
+  - first:
+      43: 4300034
+    second: Weight Limit sign
+  - first:
+      43: 4300036
+    second: No parking sign
+  - first:
+      43: 4300038
+    second: Caution sign 2
+  - first:
+      43: 4300040
+    second: Toxic sign
+  - first:
+      43: 4300042
+    second: Exit sign
+  - first:
+      43: 4300044
+    second: Fire Exit Sign
+  - first:
+      43: 4300046
+    second: Attention Sign
+  - first:
+      43: 4300048
+    second: Construction Sign
+  - first:
+      43: 4300050
+    second: Hard Hat Sign
+  externalObjects: {}
+  materials:
+    materialImportMode: 0
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importVisibility: 0
+    importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
+    fileIdsGeneration: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 1
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
+    indexFormat: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 4
+    normalCalculationMode: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 0
+  humanoidOversampling: 1
+  avatarSetup: 0
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
