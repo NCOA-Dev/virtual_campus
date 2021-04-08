@@ -1,5 +1,8 @@
 ﻿using Mirror;
+using System.Collections;
 using UnityEngine;
+
+// First Person Player controller
 
 [RequireComponent(typeof(CapsuleCollider))]
 [RequireComponent(typeof(CharacterController))]
@@ -8,29 +11,33 @@ using UnityEngine;
 public class FPPlayer : NetworkBehaviour
 {
     [Header("Player Components")]
-    [Tooltip("Camera to replace with main camera.")]
+    [Tooltip("Main camera to only enable on client.")]
     [SerializeField] private Camera cam;
     [SerializeField] private GameObject head;
 
     [Header("Movement Settings")]
-    [SerializeField] float mouseSensitivity = 1;
-    [SerializeField] float moveSpeed = 6f;
-    [SerializeField] float sprintSpeed = 10f;
-    [SerializeField] float jumpForce = 3f;
+    public CharacterController characterController;
+    [SerializeField] private float mouseSensitivity = 1;
+    [SerializeField] private float moveSpeed = 6f;
+    [SerializeField] private float sprintSpeed = 10f;
+    [SerializeField] private float jumpSpeed = 8.0f;
+    [SerializeField] private float gravity = 15.0f;
+    [SerializeField] private float jumpSpeedReduction = 0.6f;
+    [SerializeField] private float airMovementImpact = 0.25f; 
+    [SerializeField] private float jumpDelay = 0.05f;
 
     // Character controlling
-    private float speedH = 2.0f;
-    private float speedV = 2.0f;
+    private readonly float speedH = 2.0f;
+    private readonly float speedV = 2.0f;
     private float yaw;
     private float pitch;
-    public CharacterController characterController;
-
-    // Diagnostics
     private float horizontal;
     private float vertical;
-    private float jumpSpeed;
-    private bool isGrounded = true;
-    private bool isFalling;
+    private float origMoveSpeed;
+    private bool wasGrounded = false;
+    private bool canJump = true;
+
+    private Vector3 moveDirection = Vector3.zero;
 
     void OnValidate()
     {
@@ -41,18 +48,9 @@ public class FPPlayer : NetworkBehaviour
     void Start()
     {
         characterController.enabled = isLocalPlayer;
-
-		if (isLocalPlayer)
-		{
-            cam.transform.SetParent(head.transform);
-            cam.transform.position = cam.transform.position;
-            cam.transform.rotation = Quaternion.identity;
-		}
-        else
-		{
-            cam.enabled = false;
-		}
-	}
+        origMoveSpeed = moveSpeed;
+        cam.enabled = isLocalPlayer;
+    }
 
     void OnDisable()
     {
@@ -62,58 +60,111 @@ public class FPPlayer : NetworkBehaviour
         }
     }
 
+    // Controls - do not register when paused
     void Update()
     {
-        if (!isLocalPlayer || Cursor.visible)
+        if (!isLocalPlayer)
             return;
 
-        horizontal = Input.GetAxis("Horizontal");
-        vertical = Input.GetAxis("Vertical");
-
-        yaw += speedH * mouseSensitivity * Input.GetAxis("Mouse X");
-        pitch -= speedV * mouseSensitivity * Input.GetAxis("Mouse Y");
-        pitch = Mathf.Clamp(pitch, -90f, 50f);
-
-        //if (Input.GetKey(KeyCode.T))
-        //chat
-
-        if (isGrounded)
-            isFalling = false;
-
-        if ((isGrounded || !isFalling) && jumpSpeed < jumpForce && Input.GetKey(KeyCode.Space))
+        // Only allow input if controls are enabled
+        if (MPlayer.controlsEnabled)
         {
-            jumpSpeed = Mathf.Lerp(jumpSpeed, jumpForce, 0.5f);
+            horizontal = Input.GetAxis("Horizontal");
+            vertical = Input.GetAxis("Vertical");
+
+            if (Input.GetButton("Sprint") && characterController.isGrounded)
+                moveSpeed = sprintSpeed;
+            else
+                moveSpeed = origMoveSpeed;
+
+            yaw += speedH * mouseSensitivity * Input.GetAxis("Mouse X");
+            pitch -= speedV * mouseSensitivity * Input.GetAxis("Mouse Y");
+            pitch = Mathf.Clamp(pitch, -90f, 50f);
         }
-        else if (!isGrounded)
+        else
         {
-            isFalling = true;
-            jumpSpeed = 0;
+            horizontal = 0;
+            vertical = 0;
         }
     }
 
+    // Physics - occur even when paused
     void FixedUpdate()
     {
-        if (!isLocalPlayer || characterController == null || Cursor.visible)
+        if (!isLocalPlayer)
             return;
 
         // Perform turn
         head.transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
 
-        // Calculate movement
-        Vector3 direction = new Vector3(horizontal, jumpSpeed, vertical);
-        direction = Vector3.ClampMagnitude(direction, 1f);
-        bool notMoving = direction.x == 0 && direction.z == 0;
-        direction = head.transform.TransformDirection(direction);
-        if (notMoving)
-            direction = new Vector3(0, direction.y, 0); 
-        direction *= moveSpeed;
+        if (characterController.isGrounded)
+        { // Move while on the ground
+            moveDirection = new Vector3(horizontal, 0, vertical);
+            moveDirection = Vector3.ClampMagnitude(moveDirection, 1f); // Prevent horizontal-sprinting
+            moveDirection = head.transform.TransformDirection(moveDirection);
+            moveDirection.y = 0; // Prevent look-jumping
+            moveDirection *= moveSpeed;
 
-        // Move character controller
-        if (jumpSpeed > 0)
-            characterController.Move(direction * Time.fixedDeltaTime);
-        else
-            characterController.SimpleMove(direction);
+            if (Input.GetButton("Jump") && MPlayer.controlsEnabled && canJump)
+			{
+                moveDirection *= jumpSpeedReduction;
+                moveDirection.y = jumpSpeed;
 
-        isGrounded = characterController.isGrounded;
+                canJump = false;
+            }
+
+            // Wait for next jump when landed and has delay
+            if (!wasGrounded)
+			{
+                StartCoroutine(JumpDelay());
+            }
+
+            wasGrounded = true;
+        }
+		else
+		{ // Move while mid-air (reduced capacity)
+            Vector3 mov = new Vector3(horizontal, 0, vertical);
+            mov = Vector3.ClampMagnitude(mov, 1f);
+            mov = head.transform.TransformDirection(mov);
+            mov.y = 0;
+
+            moveDirection += mov * airMovementImpact;
+
+            wasGrounded = false;
+        }
+
+		moveDirection.y -= gravity * Time.deltaTime;
+        characterController.Move(moveDirection * Time.deltaTime);
     }
+
+    // Teleport player to given point
+    public void Teleport(Transform point)
+    {
+        if (isLocalPlayer)
+		{
+            characterController.enabled = false;
+            moveDirection = Vector3.zero;
+            transform.position = point.position;
+            transform.rotation = point.rotation;
+            characterController.enabled = true;
+        }
+    }
+
+    private IEnumerator JumpDelay()
+	{
+        yield return new WaitForSeconds(jumpDelay);
+        canJump = true;
+    }
+
+    // Bump physics
+    void OnControllerColliderHit(ControllerColliderHit hit)
+	{
+		//Rigidbody body = hit.collider.attachedRigidbody;
+		//Vector3 force = hit.controller.velocity * 2;
+
+		//if (body != null)
+		//{ // Apply the push
+		//	body.AddForceAtPosition(force, hit.point);
+		//}
+	}
 }

@@ -16,8 +16,6 @@ public class NetworkManagerCampus : NetworkManager
 	{
 	}
 
-	#region chat
-
 	// Called by UI element NetworkAddressInput.OnValueChanged
 	public void SetHostname(string hostname)
 	{
@@ -57,5 +55,12 @@ public class NetworkManagerCampus : NetworkManager
 		chatWindow.gameObject.SetActive(true);
 	}
 
-	#endregion
+	public void RespawnPlayer(GameObject player)
+	{
+		FPPlayer fp = player.GetComponent<FPPlayer>();
+		if (fp)
+		{
+			fp.Teleport(GetStartPosition());
+		}
+	}
 }

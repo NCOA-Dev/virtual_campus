@@ -5,16 +5,24 @@ using TMPro;
 using System;
 using UnityEngine.UI;
 
+// Multiplayer Player controls manager
+
 [RequireComponent(typeof(Rigidbody))]
 public class MPlayer : NetworkBehaviour
 {
     // Chat variables
     [SyncVar]
     public string playerName;
+
+    [SyncVar] [HideInInspector] 
+    public Color32 playerColour = Color.black;
+
     public static event Action<MPlayer, string> OnMessage;
 
     public TMP_Text username;
     private Chat chat;
+
+    public static bool controlsEnabled { get; set; }
 
     void Start()
     {
@@ -25,6 +33,7 @@ public class MPlayer : NetworkBehaviour
         {
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
+            controlsEnabled = true;
 
             // Disable own username
             username.enabled = false;
@@ -43,29 +52,45 @@ public class MPlayer : NetworkBehaviour
 
     private void Controls()
 	{
-        if (Cursor.visible && Input.GetMouseButtonDown(0) &&
+        if (Input.GetMouseButtonDown(0) &&
             UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == null)
         {
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
+            controlsEnabled = true;
         }
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
+            controlsEnabled = false;
         }
 
         if (Input.GetKeyDown(KeyCode.T))
 		{
-            // get inputfield
-            // inputfield.Select()
-            // enable cursor
-		}
+            SelectChat();
+        }
 
-        if (Cursor.visible && chat != null && chat.isActiveAndEnabled && Input.GetKeyDown(KeyCode.Return))
+        if (chat != null && chat.isActiveAndEnabled && Input.GetKeyDown(KeyCode.Return))
         {
             chat.OnSend();
+            SelectChat();
+        }
+    }
+
+    private void SelectChat()
+	{
+        InputField textChat = chat.GetComponentInChildren<InputField>();
+
+        if (textChat != null)
+        {
+            textChat.Select();
+            controlsEnabled = false;
+        }
+        else
+        {
+            Debug.LogWarning("Chat not found by " + gameObject.name);
         }
     }
 

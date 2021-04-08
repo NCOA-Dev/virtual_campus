@@ -17,8 +17,8 @@ public class Chat : MonoBehaviour
 	void OnPlayerMessage(MPlayer player, string message)
     {
         string prettyMessage = player.isLocalPlayer ?
-            $"<color=red>{player.playerName}: </color> {message}" :
-            $"<color=blue>{player.playerName}: </color> {message}";
+            $"<color=#{ColorUtility.ToHtmlStringRGB(player.playerColour)}>{player.playerName}: </color> {message}" :
+            $"<color=#{ColorUtility.ToHtmlStringRGB(player.playerColour)}>{player.playerName}: </color> {message}";
         AppendMessage(prettyMessage);
     }
 

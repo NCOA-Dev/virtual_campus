@@ -16,8 +16,7 @@ public class RandomPlayerCol : NetworkBehaviour
     [Tooltip("Material recognised as color-changing.")]
     public Material changeColorMat;
 
-    // Unity clones the material when GetComponent<Renderer>().material is called
-    // Cache it here and destroy it in OnDestroy to prevent a memory leak
+    // Cache materials to destroy and prevent a memory leak
     Material[] cachedMaterials;
 
     void SetColor(Color32 _, Color32 newColor)
@@ -39,6 +38,12 @@ public class RandomPlayerCol : NetworkBehaviour
                 }
 			}
         }
+
+        MPlayer player = GetComponent<MPlayer>();
+        if (player)
+            player.playerColour = newColor;
+        else
+            Debug.LogWarning("Player not found for " + gameObject.name);
     }
 
     void OnDestroy()
