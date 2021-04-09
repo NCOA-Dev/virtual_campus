@@ -1,5 +1,53 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1633780684132134008
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1038965115585679350}
+  - component: {fileID: 8806257531635857586}
+  m_Layer: 0
+  m_Name: Right Hand
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1038965115585679350
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1633780684132134008}
+  m_LocalRotation: {x: -0, y: -0.46277705, z: -0, w: 0.8864748}
+  m_LocalPosition: {x: 0.4985714, y: -0.3442857, z: 1.0028571}
+  m_LocalScale: {x: 0.71428573, y: 0.7142857, z: 0.71428573}
+  m_Children: []
+  m_Father: {fileID: 558942269571084977}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: -55.133003, z: 0}
+--- !u!114 &8806257531635857586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1633780684132134008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 0
+  serverOnly: 0
+  visible: 0
+  m_AssetId: 
+  hasSpawned: 0
 --- !u!1 &1770814159504048833
 GameObject:
   m_ObjectHideFlags: 0
@@ -206,7 +254,6 @@ GameObject:
   - component: {fileID: 5579514079933302626}
   - component: {fileID: 7652507284172048526}
   - component: {fileID: 8148351046002195545}
-  - component: {fileID: 1219026917568716870}
   m_Layer: 0
   m_Name: MPlayer
   m_TagString: Player
@@ -393,6 +440,7 @@ MonoBehaviour:
   syncInterval: 0.1
   cam: {fileID: 7877427393931995151}
   head: {fileID: 8647544125233820565}
+  grabHand: {fileID: 1633780684132134008}
   characterController: {fileID: 3093276378357155172}
   mouseSensitivity: 1
   moveSpeed: 4.5
@@ -402,21 +450,10 @@ MonoBehaviour:
   jumpSpeedReduction: 0.6
   airMovementImpact: 0.25
   jumpDelay: 0.05
---- !u!114 &1219026917568716870
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2331104686227404664}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 60438236ce945904d85939e9c40835a3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.05
-  lerpRate: 2
+  interactRange: 4
+  throwForce: 8
+  heldObject: {fileID: 0}
+  holdingObjectR: 0
 --- !u!1 &2331149441469700862
 GameObject:
   m_ObjectHideFlags: 0
@@ -761,6 +798,7 @@ Transform:
   m_Children:
   - {fileID: 7877427393931995144}
   - {fileID: 2328930927922942598}
+  - {fileID: 1038965115585679350}
   m_Father: {fileID: 2327759054135280778}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -818,6 +856,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 438921128687121392}
     m_Modifications:
+    - target: {fileID: 717005859831133208, guid: d2e030ce4b9432d4a942f4f3bd829e07,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 776785827861006820, guid: d2e030ce4b9432d4a942f4f3bd829e07,
         type: 3}
       propertyPath: m_Name

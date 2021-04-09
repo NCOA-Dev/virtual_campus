@@ -37,6 +37,7 @@ public class NetworkManagerCampus : NetworkManager
 		// tell the server to create a player with this name
 		conn.Send(new CreatePlayerMessage { name = PlayerName });
 	}
+
 	private void OnCreatePlayer(NetworkConnection connection, CreatePlayerMessage createPlayerMessage)
 	{
 		Transform startPos = GetStartPosition();
@@ -51,6 +52,7 @@ public class NetworkManagerCampus : NetworkManager
 		// Name player unique for debugging
 		player.name = $"{playerPrefab.name} [connId={connection.connectionId}]";
 		NetworkServer.AddPlayerForConnection(connection, player);
+		//NetworkServer.Spawn(player.GetComponent<FPPlayer>().grabHand, connection);
 
 		chatWindow.gameObject.SetActive(true);
 	}

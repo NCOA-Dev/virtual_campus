@@ -35,7 +35,7 @@ public class MPlayer : NetworkBehaviour
             Cursor.lockState = CursorLockMode.Locked;
             controlsEnabled = true;
 
-            // Disable own username
+            // Disable own username from view
             username.enabled = false;
         }
     }
@@ -71,7 +71,6 @@ public class MPlayer : NetworkBehaviour
 		{
             SelectChat();
         }
-
         if (chat != null && chat.isActiveAndEnabled && Input.GetKeyDown(KeyCode.Return))
         {
             chat.OnSend();
@@ -94,9 +93,9 @@ public class MPlayer : NetworkBehaviour
         }
     }
 
-	#region chat
+    #region chat
 
-	[Command]
+    [Command]
     public void CmdSend(string message)
     {
         if (message.Trim() != "")

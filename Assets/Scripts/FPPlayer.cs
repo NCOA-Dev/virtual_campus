@@ -1,4 +1,5 @@
 ﻿using Mirror;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -14,6 +15,7 @@ public class FPPlayer : NetworkBehaviour
     [Tooltip("Main camera to only enable on client.")]
     [SerializeField] private Camera cam;
     [SerializeField] private GameObject head;
+    public GameObject grabHand;
 
     [Header("Movement Settings")]
     public CharacterController characterController;
@@ -26,6 +28,10 @@ public class FPPlayer : NetworkBehaviour
     [SerializeField] private float airMovementImpact = 0.25f; 
     [SerializeField] private float jumpDelay = 0.05f;
 
+    [Header("Other Settings")]
+    [SerializeField] private float interactRange = 5f;
+    [SerializeField] private float throwForce = 8f;
+
     // Character controlling
     private readonly float speedH = 2.0f;
     private readonly float speedV = 2.0f;
@@ -36,8 +42,11 @@ public class FPPlayer : NetworkBehaviour
     private float origMoveSpeed;
     private bool wasGrounded = false;
     private bool canJump = true;
+    [SyncVar] [HideInInspector] public GameObject heldObject;
+    [SyncVar] [HideInInspector] public bool holdingObjectR = false;
 
     private Vector3 moveDirection = Vector3.zero;
+    private InteractableObject prevObj;
 
     void OnValidate()
     {
@@ -77,6 +86,11 @@ public class FPPlayer : NetworkBehaviour
             else
                 moveSpeed = origMoveSpeed;
 
+            if (Input.GetButtonDown("Interact")) // LMB or E
+                Interact();
+
+            DetectInteractables();
+
             yaw += speedH * mouseSensitivity * Input.GetAxis("Mouse X");
             pitch -= speedV * mouseSensitivity * Input.GetAxis("Mouse Y");
             pitch = Mathf.Clamp(pitch, -90f, 50f);
@@ -85,6 +99,73 @@ public class FPPlayer : NetworkBehaviour
         {
             horizontal = 0;
             vertical = 0;
+        }
+    }
+
+    private void Interact()
+    {
+        if (heldObject != null)
+		{
+            Throw(heldObject);
+		}
+        else if (Physics.Raycast(head.transform.position, head.transform.TransformDirection(Vector3.forward), out RaycastHit hit, interactRange))
+        {
+            InteractableObject obj = hit.collider.gameObject.GetComponent<InteractableObject>();
+            if (obj != null)
+            {
+                NetworkIdentity iden = hit.transform.GetComponent<NetworkIdentity>();
+
+                if (iden != null)
+				{
+                    CmdSetAuthority(iden, this.GetComponent<NetworkIdentity>());
+                }
+
+                obj.Interact(this);
+            }
+        }
+    }
+
+    private void Throw(GameObject obj)
+	{
+        obj.transform.SetParent(null);
+        Rigidbody rb = obj.GetComponent<Rigidbody>();
+        Vector3 force = head.transform.forward * throwForce;
+        force += Vector3.ClampMagnitude(characterController.velocity * 0.5f, 0.2f);
+
+        if (rb != null)
+        { // Apply the throw
+            rb.isKinematic = false;
+            rb.AddForce(force, ForceMode.Impulse);
+        }
+
+        heldObject = null;
+        holdingObjectR = false;
+
+        NetworkIdentity iden = obj.transform.GetComponent<NetworkIdentity>();
+
+        if (iden != null)
+        {
+            CmdRemoveAuthority(iden);
+        }
+    }
+
+	private void DetectInteractables()
+	{
+        if (Physics.Raycast(head.transform.position, head.transform.TransformDirection(Vector3.forward), out RaycastHit hit, interactRange))
+        {
+            if (prevObj != null) // Remove previous highlight
+                prevObj.Highlight(false);
+
+            InteractableObject obj = hit.collider.gameObject.GetComponent<InteractableObject>();
+            if (obj != null)
+            {
+                obj.Highlight(true);
+                prevObj = obj;
+            }
+        }
+        else if (prevObj != null)
+		{ // Remove previous highlight
+            prevObj.Highlight(false);
         }
     }
 
@@ -156,15 +237,50 @@ public class FPPlayer : NetworkBehaviour
         canJump = true;
     }
 
+    [Command]
+    void CmdSetAuthority(NetworkIdentity grabID, NetworkIdentity playerID)
+    {
+        try
+		{
+            grabID.RemoveClientAuthority();
+        }
+        catch
+		{
+            // doesn't have authority to remove
+        }
+        try
+		{
+            grabID.AssignClientAuthority(connectionToClient);
+        }
+        catch
+		{
+            // ?
+		}
+    }
+
+    [Command]
+    void CmdRemoveAuthority(NetworkIdentity grabID)
+    {
+        grabID.RemoveClientAuthority();
+    }
+
     // Bump physics
     void OnControllerColliderHit(ControllerColliderHit hit)
 	{
-		//Rigidbody body = hit.collider.attachedRigidbody;
-		//Vector3 force = hit.controller.velocity * 2;
+		Rigidbody body = hit.collider.attachedRigidbody;
+		Vector3 force = Vector3.ClampMagnitude(hit.controller.velocity, 1f) ;
 
-		//if (body != null)
-		//{ // Apply the push
-		//	body.AddForceAtPosition(force, hit.point);
-		//}
-	}
+		if (body != null && hit.transform.GetComponent<InteractableObject>() != null) 
+		{  // Set new authority of interactable objects only
+            NetworkIdentity iden = hit.transform.GetComponent<NetworkIdentity>();
+
+            if (iden != null)
+            {
+                CmdSetAuthority(iden, this.GetComponent<NetworkIdentity>());
+            }
+
+            // Apply the push
+            body.AddForceAtPosition(force, hit.point, ForceMode.Impulse);
+        }
+    }
 }
