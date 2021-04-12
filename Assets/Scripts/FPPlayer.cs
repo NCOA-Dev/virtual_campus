@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using static InteractableObject;
 
 // First Person Player controller
 
@@ -42,8 +43,8 @@ public class FPPlayer : NetworkBehaviour
     private float origMoveSpeed;
     private bool wasGrounded = false;
     private bool canJump = true;
-    [SyncVar] [HideInInspector] public GameObject heldObject;
-    [SyncVar] [HideInInspector] public bool holdingObjectR = false;
+    [SyncVar] public GameObject heldObject;
+    [SyncVar] public bool holdingObjectR = false;
 
     private Vector3 moveDirection = Vector3.zero;
     private InteractableObject prevObj;
@@ -102,13 +103,17 @@ public class FPPlayer : NetworkBehaviour
         }
     }
 
-    [Command]
     private void Interact()
     {
         if (heldObject != null)
 		{
+            heldObject.GetComponent<InteractableObject>().Detach();
+            heldObject.transform.parent = null;
             Throw(heldObject);
-		}
+
+            heldObject = null;
+            holdingObjectR = false;
+        }
         else if (Physics.Raycast(head.transform.position, head.transform.TransformDirection(Vector3.forward), out RaycastHit hit, interactRange))
         {
             InteractableObject obj = hit.collider.gameObject.GetComponent<InteractableObject>();
@@ -118,35 +123,30 @@ public class FPPlayer : NetworkBehaviour
 
                 if (iden != null)
 				{
-                    CmdSetAuthority(iden, this.GetComponent<NetworkIdentity>());
+                    // Give player's authority to object
+                    CmdSetAuthority(iden, GetComponent<NetworkIdentity>());
                 }
+                else
+				{
+                    Debug.LogWarning("Identity not found.");
+				}
 
-                Grab(hit.collider.gameObject);
-                obj.Interact(this);
+                StartCoroutine(WaitThenInteract(iden));
             }
         }
     }
 
-    private void Grab(GameObject obj)
-    {
-		obj.transform.SetParent(grabHand.transform);
-		obj.transform.position = grabHand.transform.position;
-		obj.transform.rotation = grabHand.transform.rotation;
+    private IEnumerator WaitThenInteract(NetworkIdentity obj)
+	{
+        // Wait until authority is given
+        yield return new WaitUntil(() => obj.hasAuthority);
 
-        Rigidbody rb = obj.GetComponent<Rigidbody>();
+        // Run interact methods
+        InteractableObject intObj = obj.GetComponent<InteractableObject>();
+        intObj.Interact(this);
+    }
 
-		if (rb != null)
-		{
-			rb.isKinematic = true;
-		}
-
-		heldObject = obj;
-
-		//currentParent = hand.transform;
-		//currentPosition = transform.position;
-		//currentRotation = transform.rotation;
-	}
-
+    [Command]
     private void Throw(GameObject obj)
 	{
         obj.transform.SetParent(null);
@@ -162,13 +162,6 @@ public class FPPlayer : NetworkBehaviour
 
         heldObject = null;
         holdingObjectR = false;
-
-        NetworkIdentity iden = obj.transform.GetComponent<NetworkIdentity>();
-
-        if (iden != null)
-        {
-            CmdRemoveAuthority(iden);
-        }
     }
 
 	private void DetectInteractables()
@@ -272,7 +265,7 @@ public class FPPlayer : NetworkBehaviour
         }
         try
 		{
-            grabID.AssignClientAuthority(playerID.connectionToClient);
+            grabID.AssignClientAuthority(connectionToClient);
         }
         catch
 		{

@@ -51,7 +51,8 @@ public class InteractableObject : NetworkTransform
 			case InteractableType.Grabbable:
 				if (!player.holdingObjectR)
 				{ // Grab if not already holding
-					Grab(player.grabHand);
+					Grab(player);
+					GrabClient(player);
 					player.heldObject = gameObject;
 					player.holdingObjectR = true;
 					onInteract.Invoke();
@@ -96,7 +97,7 @@ public class InteractableObject : NetworkTransform
 		rb.Sleep();
 	}
 
-	//[Command]
+	[Command]
 	private void PressButton()
 	{
 		anim = GetComponent<Animator>();
@@ -109,23 +110,35 @@ public class InteractableObject : NetworkTransform
 		}
 	}
 
-	//[Command]
-	private void Grab(GameObject hand)
+	[Command]
+	private void Grab(FPPlayer player)
 	{
-		//transform.SetParent(hand.transform);
-		//currentParent = hand.transform;
-		//transform.position = hand.transform.position;
-		//transform.rotation = hand.transform.rotation;
+		Transform hand = player.grabHand.transform;
+		transform.SetParent(hand);
+		transform.position = hand.position;
+		transform.rotation = hand.rotation;
 
-		//rb.isKinematic = true;
+		rb.isKinematic = true;
+	}
 
-		currentParent = hand.transform;
-		currentPosition = transform.position;
-		currentRotation = transform.rotation;
+	public void GrabClient(FPPlayer player)
+	{
+		Transform hand = player.grabHand.transform;
+
+		player.heldObject = gameObject;
+		currentParent = hand;
+		currentPosition = hand.position;
+		currentRotation = hand.rotation;
+	}
+
+	public void Detach()
+	{
+		transform.SetParent(null);
+		currentParent = null;
 	}
 
 	#region sync
-	
+
 	//[ClientRpc]
 	private void SyncTriggers()
 	{

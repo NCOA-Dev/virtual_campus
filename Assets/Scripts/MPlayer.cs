@@ -75,6 +75,10 @@ public class MPlayer : NetworkBehaviour
         {
             chat.OnSend();
             SelectChat();
+
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+            controlsEnabled = true;
         }
     }
 
