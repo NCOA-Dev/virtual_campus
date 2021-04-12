@@ -19,7 +19,6 @@ public class InteractableObject : NetworkTransform
 	private Rigidbody rb;
 	private Vector3 startPosition;
 
-
 	[SyncVar] private Vector3 currentPosition = Vector3.zero;
 	[SyncVar] private Transform currentParent = null;
 	[SyncVar] private Quaternion currentRotation = Quaternion.identity;
@@ -97,7 +96,7 @@ public class InteractableObject : NetworkTransform
 		rb.Sleep();
 	}
 
-	[Command]
+	//[Command]
 	private void PressButton()
 	{
 		anim = GetComponent<Animator>();
@@ -113,16 +112,16 @@ public class InteractableObject : NetworkTransform
 	//[Command]
 	private void Grab(GameObject hand)
 	{
-		transform.SetParent(hand.transform);
-		currentParent = hand.transform;
-		transform.position = hand.transform.position;
-		transform.rotation = hand.transform.rotation;
-
-		rb.isKinematic = true;
-
+		//transform.SetParent(hand.transform);
 		//currentParent = hand.transform;
-		//currentPosition = transform.position;
-		//currentRotation = transform.rotation;
+		//transform.position = hand.transform.position;
+		//transform.rotation = hand.transform.rotation;
+
+		//rb.isKinematic = true;
+
+		currentParent = hand.transform;
+		currentPosition = transform.position;
+		currentRotation = transform.rotation;
 	}
 
 	#region sync

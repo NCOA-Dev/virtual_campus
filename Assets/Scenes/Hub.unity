@@ -716,7 +716,7 @@ MonoBehaviour:
   localScaleSensitivity: 0.01
   compressRotation: 0
   interpolateScale: 0
-  syncScale: 0
+  syncScale: 1
   onInteract:
     m_PersistentCalls:
       m_Calls: []
@@ -964,7 +964,7 @@ MonoBehaviour:
   localScaleSensitivity: 0.01
   compressRotation: 0
   interpolateScale: 0
-  syncScale: 0
+  syncScale: 1
   onInteract:
     m_PersistentCalls:
       m_Calls: []
@@ -1119,7 +1119,7 @@ MonoBehaviour:
   localScaleSensitivity: 0.01
   compressRotation: 0
   interpolateScale: 0
-  syncScale: 0
+  syncScale: 1
   onInteract:
     m_PersistentCalls:
       m_Calls: []
@@ -1406,7 +1406,7 @@ MonoBehaviour:
   localScaleSensitivity: 0.01
   compressRotation: 0
   interpolateScale: 0
-  syncScale: 0
+  syncScale: 1
   onInteract:
     m_PersistentCalls:
       m_Calls: []
@@ -3390,7 +3390,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 733024915}
   m_HandleRect: {fileID: 733024914}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -3903,7 +3903,7 @@ MonoBehaviour:
   localScaleSensitivity: 0.01
   compressRotation: 0
   interpolateScale: 0
-  syncScale: 0
+  syncScale: 1
   onInteract:
     m_PersistentCalls:
       m_Calls: []
@@ -5295,7 +5295,7 @@ MonoBehaviour:
   localScaleSensitivity: 0.01
   compressRotation: 0
   interpolateScale: 0
-  syncScale: 0
+  syncScale: 1
   onInteract:
     m_PersistentCalls:
       m_Calls: []
@@ -6213,7 +6213,7 @@ MonoBehaviour:
   localScaleSensitivity: 0.01
   compressRotation: 0
   interpolateScale: 0
-  syncScale: 0
+  syncScale: 1
   onInteract:
     m_PersistentCalls:
       m_Calls: []
@@ -7788,7 +7788,7 @@ MonoBehaviour:
   localScaleSensitivity: 0.01
   compressRotation: 0
   interpolateScale: 0
-  syncScale: 0
+  syncScale: 1
   onInteract:
     m_PersistentCalls:
       m_Calls: []
@@ -7943,7 +7943,7 @@ MonoBehaviour:
   localScaleSensitivity: 0.01
   compressRotation: 0
   interpolateScale: 0
-  syncScale: 0
+  syncScale: 1
   onInteract:
     m_PersistentCalls:
       m_Calls: []

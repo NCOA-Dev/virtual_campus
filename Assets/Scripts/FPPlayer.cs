@@ -102,6 +102,7 @@ public class FPPlayer : NetworkBehaviour
         }
     }
 
+    [Command]
     private void Interact()
     {
         if (heldObject != null)
@@ -120,10 +121,31 @@ public class FPPlayer : NetworkBehaviour
                     CmdSetAuthority(iden, this.GetComponent<NetworkIdentity>());
                 }
 
+                Grab(hit.collider.gameObject);
                 obj.Interact(this);
             }
         }
     }
+
+    private void Grab(GameObject obj)
+    {
+		obj.transform.SetParent(grabHand.transform);
+		obj.transform.position = grabHand.transform.position;
+		obj.transform.rotation = grabHand.transform.rotation;
+
+        Rigidbody rb = obj.GetComponent<Rigidbody>();
+
+		if (rb != null)
+		{
+			rb.isKinematic = true;
+		}
+
+		heldObject = obj;
+
+		//currentParent = hand.transform;
+		//currentPosition = transform.position;
+		//currentRotation = transform.rotation;
+	}
 
     private void Throw(GameObject obj)
 	{
@@ -250,7 +272,7 @@ public class FPPlayer : NetworkBehaviour
         }
         try
 		{
-            grabID.AssignClientAuthority(connectionToClient);
+            grabID.AssignClientAuthority(playerID.connectionToClient);
         }
         catch
 		{
