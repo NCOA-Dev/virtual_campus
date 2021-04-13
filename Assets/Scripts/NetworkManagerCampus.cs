@@ -65,4 +65,10 @@ public class NetworkManagerCampus : NetworkManager
 			fp.Teleport(GetStartPosition());
 		}
 	}
+
+	public override void OnServerDisconnect(NetworkConnection conn)
+	{
+		base.OnServerDisconnect(conn);
+
+	}
 }
